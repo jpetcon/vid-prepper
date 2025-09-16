@@ -1,0 +1,104 @@
+[project]
+name = "vid-prepper"
+version = "0.1.22"
+description = "Package for preparing videos for deep learning models"
+readme = "README.md"
+authors = [
+    { name="Jamie Petherbridge-Conroy", email="jamie@jamiepc.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "Apache-2.0"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0.0,<3.0.0",
+    "torchvision>=0.17.0,<1.0.0",
+    "transformers>=4.40.0,<5.0.0",
+    "numpy>=1.21.0,<2.0.0",
+    "scenedetect>=0.6.0,<1.0.0",
+    "kornia>=0.7.0,<1.0.0",
+    "webdataset>=0.2.0,<1.0.0",
+    "opencv-python>=4.5.0,<5.0.0"
+]
+
+[project.optional-dependencies]
+gpu = [
+    "torch[cuda]>=2.0.0,<3.0.0",
+]
+video = [
+    "av>=15.0.0,<16.0.0"
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+
+[project.scripts]
+vid_prepper = "vid_prepper.main:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src/vid_prepper",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "ultralytics.*",
+    "scenedetect.*",
+    "kornia.*",
+    "webdataset.*",
+    "av.*",
+    "cv2.*",
+]
+ignore_missing_imports = true

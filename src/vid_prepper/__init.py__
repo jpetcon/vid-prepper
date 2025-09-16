@@ -1,0 +1,27 @@
+import importlib
+import traceback
+
+# map submodule -> class name -> public alias
+_modules = {
+    "detector": ("VideoDetector", "detector"),
+    "augmentor": ("VideoAugmentor", "augment"),
+    "loader": ("VideoLoader", "loader"),
+    "metadata": ("Metadata", "metadata"),
+    "standardize": ("VideoStandardizer", "standardize"),
+}
+
+_exports = {}
+
+for module_name, (class_name, public_name) in _modules.items():
+    try:
+        mod = importlib.import_module(f".{module_name}", __package__)
+        _exports[public_name] = getattr(mod, class_name)
+    except Exception:
+        print(f"Warning: Could not import {class_name} from {module_name}")
+        traceback.print_exc()
+
+# inject into globals for top-level import
+globals().update(_exports)
+
+
+__all__ = list(_exports.keys())
