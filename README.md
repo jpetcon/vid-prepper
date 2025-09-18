@@ -1,5 +1,7 @@
 # vid-prepper
 
+Usage examples available at: https://github.com/jpetcon/vid-prepper/tree/main/examples
+
 Package for preparing videos for deep learning models. Built on the giant shoulders of FFMPEG, NVIDIA DALI, OpenCV, Kornia, PySceneDetect, Torchvision and PyTorch.
 
 This package attempts to bring some common video pre-processing methods together in an efficient way for both CPU and GPU.
